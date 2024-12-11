@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+    <style>   
+    </style>
+</head>
+
+<body>
+<!-- Created a heading and a container-->
+    <h1>Shopping List</h1>
+    <div class="container">
+        <div class="input-group">
+            <input type="text" id="item-input" placeholder="Add an item">
+            <button onclick="addItem()">Add</button>
+        </div>
+        <ul id="shopping-list"></ul>
+        <button class="clear-btn" onclick="clearList()">Clear List</button>
+    </div>
+
+    <script>
+    //DOM MANIPULATION
+        
+const shoppingList = []; // //Created an array to store shopping list items
+
+// created a function for adding items 
+function addItem() {
+    const input = document.getElementById('item-input');
+    const itemText = input.value.trim();
+
+    if (itemText === '') {
+        alert('Please enter an item!');
+        return;
+    }
+
+    // Add item to array
+    shoppingList.push({ text: itemText, purchased: false });
+
+    // Update the DOM
+    renderList();
+
+    input.value = '';
+}
+
+function renderList() {
+    const list = document.getElementById('shopping-list');
+    list.innerHTML = '';
+
+    shoppingList.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.className = item.purchased ? 'purchased' : '';
+        li.textContent = item.text;
+
+        const markButton = document.createElement('button');
+        markButton.textContent = item.purchased ? 'Unmark' : 'Mark as Purchased';
+        markButton.onclick = () => {
+            shoppingList[index].purchased = !shoppingList[index].purchased;
+            renderList();
+        };
+
+        li.appendChild(markButton);
+        list.appendChild(li);
+    });
+}
+
+function clearList() {
+    // Clear the array
+    shoppingList.length = 0;
+
+    // Update the DOM
+    renderList();
+}
+    </script>
+</body>
+</html>
